@@ -11,7 +11,10 @@ export default function DocumentsPage() {
         companyName: '',
         websiteUrl: '',
         docType: 'Privacy Policy',
-        dataTypes: [] as string[]
+        dataTypes: [] as string[],
+        email: '',
+        address: '',
+        vatId: ''
     })
     const [generatedDoc, setGeneratedDoc] = useState('')
 
@@ -125,6 +128,40 @@ export default function DocumentsPage() {
                                     value={formData.websiteUrl}
                                     onChange={(e) => setFormData({ ...formData, websiteUrl: e.target.value })}
                                 />
+                            </div>
+
+                            <div>
+                                <label className="mb-2 block text-sm font-medium">Email Titolare</label>
+                                <input
+                                    type="email"
+                                    className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800"
+                                    placeholder="privacy@azienda.com"
+                                    value={formData.email}
+                                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium">Indirizzo Sede</label>
+                                    <input
+                                        type="text"
+                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800"
+                                        placeholder="Via Roma 1, Milano"
+                                        value={formData.address}
+                                        onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="mb-2 block text-sm font-medium">P.IVA / C.F.</label>
+                                    <input
+                                        type="text"
+                                        className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800"
+                                        placeholder="01234567890"
+                                        value={formData.vatId}
+                                        onChange={(e) => setFormData({ ...formData, vatId: e.target.value })}
+                                    />
+                                </div>
                             </div>
 
                             <div>
