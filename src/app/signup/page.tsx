@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Check, Loader2, UserPlus, ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 export default function SignupPage() {
     const router = useRouter()
@@ -16,13 +17,32 @@ export default function SignupPage() {
         setLoading(true)
         setError('')
 
-        // TODO: Implement actual Supabase Auth here
-        // For now, we simulate a signup delay and redirect to login or dashboard
+        const formData = new FormData(e.currentTarget)
+        const name = formData.get('name') as string
+        const email = formData.get('email') as string
+        const password = formData.get('password') as string
 
-        setTimeout(() => {
+        const supabase = createClient()
+
+        const { error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+                data: {
+                    full_name: name,
+                },
+                emailRedirectTo: `${location.origin}/auth/callback`,
+            },
+        })
+
+        if (error) {
+            setError(error.message)
             setLoading(false)
+        } else {
+            // Ideally check if session is created (auto-confirm) or not (email confirm needed)
+            // For now, redirect to dashboard which should handle the state
             router.push('/dashboard')
-        }, 1000)
+        }
     }
 
     return (

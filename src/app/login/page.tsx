@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button' // Assuming this exists as verified
 import { Check, Loader2, LogIn, ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
     const router = useRouter()
@@ -16,13 +17,23 @@ export default function LoginPage() {
         setLoading(true)
         setError('')
 
-        // TODO: Implement actual Supabase Auth here
-        // For now, we simulate a login delay and redirect to dashboard
+        const formData = new FormData(e.currentTarget)
+        const email = formData.get('email') as string
+        const password = formData.get('password') as string
 
-        setTimeout(() => {
+        const supabase = createClient()
+
+        const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+        })
+
+        if (error) {
+            setError(error.message)
             setLoading(false)
+        } else {
             router.push('/dashboard')
-        }, 1000)
+        }
     }
 
     return (
