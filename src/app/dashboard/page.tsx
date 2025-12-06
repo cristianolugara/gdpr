@@ -21,14 +21,25 @@ export default function DashboardPage() {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 {[
                     { label: "Documenti Generati", value: "12", trend: "+2 questa settimana" },
-                    { label: "Analisi AI Completate", value: "8", trend: "100% accuratezza" },
+                    {
+                        label: "Privacy Score",
+                        value: "85%",
+                        trend: "Ottimo livello",
+                        customVisual: (
+                            <div className="absolute right-4 top-4 h-12 w-12 rounded-full border-4 border-emerald-500 flex items-center justify-center text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-900/20">
+                                A
+                            </div>
+                        )
+                    },
                     { label: "Progetti Attivi", value: "3", trend: "Tutti conformi" },
                     { label: "Azioni Richieste", value: "1", trend: "Bassa priorità", alert: true },
                 ].map((stat, i) => (
-                    <div key={i} className="rounded-xl border bg-card text-card-foreground shadow-sm p-6 bg-white dark:bg-slate-900">
+                    <div key={i} className="relative rounded-xl border bg-card text-card-foreground shadow-sm p-6 bg-white dark:bg-slate-900">
                         <div className="text-sm font-medium text-slate-500 dark:text-slate-400">{stat.label}</div>
                         <div className={`mt-2 text-3xl font-bold ${stat.alert ? 'text-orange-500' : ''}`}>{stat.value}</div>
                         <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{stat.trend}</div>
+                        {/* @ts-ignore */}
+                        {stat.customVisual}
                     </div>
                 ))}
             </div>
@@ -117,8 +128,8 @@ export default function DashboardPage() {
                                     <td className="p-4 align-middle">{row.date}</td>
                                     <td className="p-4 align-middle">
                                         <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${row.status === 'Completato' ? 'bg-green-100 text-green-800 dark:bg-green-900 text-green-300' :
-                                                row.status === 'In Revisione' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 text-yellow-300' :
-                                                    'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300'
+                                            row.status === 'In Revisione' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 text-yellow-300' :
+                                                'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300'
                                             }`}>
                                             {row.status}
                                         </span>

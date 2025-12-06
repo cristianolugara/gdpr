@@ -9,7 +9,7 @@ export default function RegisterPage() {
             categories: "Anagrafiche, Contatti, Fatturazione",
             recipients: "Commercialista, Provider Gestionale",
             retention: "10 anni",
-            status: "Activo"
+            status: "Attivo"
         },
         {
             id: 2,
@@ -18,7 +18,7 @@ export default function RegisterPage() {
             categories: "Email, Nome",
             recipients: "Mailchimp (USA)",
             retention: "Fino a revoca",
-            status: "Activo"
+            status: "Attivo"
         },
         {
             id: 3,
@@ -36,7 +36,7 @@ export default function RegisterPage() {
             categories: "CV, Foto, Dati particolari",
             recipients: "HR Interno",
             retention: "12 mesi",
-            status: "Activo"
+            status: "Attivo"
         }
     ]
 
@@ -92,9 +92,9 @@ export default function RegisterPage() {
                                     <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{activity.recipients}</td>
                                     <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{activity.retention}</td>
                                     <td className="px-6 py-4">
-                                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${activity.status === 'Activo'
-                                                ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
-                                                : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
+                                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${activity.status === 'Attivo'
+                                            ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300'
+                                            : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300'
                                             }`}>
                                             {activity.status}
                                         </span>
