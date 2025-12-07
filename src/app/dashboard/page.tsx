@@ -54,7 +54,7 @@ export default async function DashboardPage() {
         <div className="space-y-8">
             {/* Hero / Welcome */}
             <div>
-                <h2 className="text-3xl font-bold tracking-tight">Bentornato, {userName}</h2>
+                <h2 className="text-3xl font-bold tracking-tight">Ciao, {userName}</h2>
                 <p className="text-slate-500 dark:text-slate-400">
                     Ecco la situazione della conformità GDPR dei tuoi progetti.
                 </p>
@@ -190,8 +190,8 @@ export default async function DashboardPage() {
                                         <td className="p-4 align-middle">{new Date(doc.created_at).toLocaleDateString('it-IT')}</td>
                                         <td className="p-4 align-middle">
                                             <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ${doc.status === 'Completato' ? 'bg-green-100 text-green-800 dark:bg-green-900 text-green-300' :
-                                                    doc.status === 'In Revisione' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 text-yellow-300' :
-                                                        'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300'
+                                                doc.status === 'In Revisione' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 text-yellow-300' :
+                                                    'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-300'
                                                 }`}>
                                                 {doc.status}
                                             </span>
