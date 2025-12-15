@@ -6,7 +6,9 @@ import {
     ShieldAlert,
     Bot,
     Settings,
-    LogOut
+    LogOut,
+    Users,
+    AlertTriangle
 } from "lucide-react"
 
 export default function DashboardLayout({
@@ -49,6 +51,20 @@ export default function DashboardLayout({
                         >
                             <ShieldAlert className="h-4 w-4" />
                             Registro Trattamenti
+                        </Link>
+                        <Link
+                            href="/dashboard/requests"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50"
+                        >
+                            <Users className="h-4 w-4" />
+                            Richieste Interessati
+                        </Link>
+                        <Link
+                            href="/dashboard/breach"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50"
+                        >
+                            <AlertTriangle className="h-4 w-4" />
+                            Data Breach
                         </Link>
                         <Link
                             href="/dashboard/ai-assistant"
