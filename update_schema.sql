@@ -42,9 +42,13 @@ create table if not exists public.gdpr_vendors (
 
 -- RLS per Vendors
 alter table public.gdpr_vendors enable row level security;
+drop policy if exists "Users can view own vendors" on gdpr_vendors;
 create policy "Users can view own vendors" on gdpr_vendors for select using ((select auth.uid()) = user_id);
+drop policy if exists "Users can insert own vendors" on gdpr_vendors;
 create policy "Users can insert own vendors" on gdpr_vendors for insert with check ((select auth.uid()) = user_id);
+drop policy if exists "Users can update own vendors" on gdpr_vendors;
 create policy "Users can update own vendors" on gdpr_vendors for update using ((select auth.uid()) = user_id);
+drop policy if exists "Users can delete own vendors" on gdpr_vendors;
 create policy "Users can delete own vendors" on gdpr_vendors for delete using ((select auth.uid()) = user_id);
 
 -- Tabella Formazione Privacy (GDPR Art. 29, 32)
@@ -62,9 +66,13 @@ create table if not exists public.gdpr_training (
 
 -- RLS per Training
 alter table public.gdpr_training enable row level security;
+drop policy if exists "Users can view own training" on gdpr_training;
 create policy "Users can view own training" on gdpr_training for select using ((select auth.uid()) = user_id);
+drop policy if exists "Users can insert own training" on gdpr_training;
 create policy "Users can insert own training" on gdpr_training for insert with check ((select auth.uid()) = user_id);
+drop policy if exists "Users can update own training" on gdpr_training;
 create policy "Users can update own training" on gdpr_training for update using ((select auth.uid()) = user_id);
+drop policy if exists "Users can delete own training" on gdpr_training;
 create policy "Users can delete own training" on gdpr_training for delete using ((select auth.uid()) = user_id);
 
 -- Tabella Registri Controlli/Audit (Sicurezza, Backup, Annuali)
@@ -83,7 +91,11 @@ create table if not exists public.gdpr_audit_logs (
 
 -- RLS per Audit Logs
 alter table public.gdpr_audit_logs enable row level security;
+drop policy if exists "Users can view own audits" on gdpr_audit_logs;
 create policy "Users can view own audits" on gdpr_audit_logs for select using ((select auth.uid()) = user_id);
+drop policy if exists "Users can insert own audits" on gdpr_audit_logs;
 create policy "Users can insert own audits" on gdpr_audit_logs for insert with check ((select auth.uid()) = user_id);
+drop policy if exists "Users can update own audits" on gdpr_audit_logs;
 create policy "Users can update own audits" on gdpr_audit_logs for update using ((select auth.uid()) = user_id);
+drop policy if exists "Users can delete own audits" on gdpr_audit_logs;
 create policy "Users can delete own audits" on gdpr_audit_logs for delete using ((select auth.uid()) = user_id);

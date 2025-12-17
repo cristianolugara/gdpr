@@ -71,3 +71,68 @@ export async function createBreachAction(data: Omit<DataBreachIncident, 'id' | '
         return { success: false, error: "Failed to create breach" }
     }
 }
+
+// --- VENDORS ---
+import { GdprVendor, GdprTraining, GdprAuditLog } from "@/types/gdpr"
+
+export async function createVendorAction(data: Omit<GdprVendor, 'id' | 'companyId' | 'createdAt' | 'updatedAt'>) {
+    try {
+        const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+
+        if (!user) throw new Error("Unauthorized")
+
+        await GdprRepository.createVendor({
+            ...data,
+            companyId: user.id
+        })
+
+        revalidatePath('/dashboard/vendors')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to create vendor", error)
+        return { success: false, error: "Failed to create vendor" }
+    }
+}
+
+// --- TRAINING ---
+export async function createTrainingAction(data: Omit<GdprTraining, 'id' | 'companyId' | 'createdAt'>) {
+    try {
+        const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+
+        if (!user) throw new Error("Unauthorized")
+
+        await GdprRepository.createTraining({
+            ...data,
+            companyId: user.id
+        })
+
+        revalidatePath('/dashboard/training')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to create training", error)
+        return { success: false, error: "Failed to create training" }
+    }
+}
+
+// --- AUDIT ---
+export async function createAuditAction(data: Omit<GdprAuditLog, 'id' | 'companyId' | 'createdAt'>) {
+    try {
+        const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+
+        if (!user) throw new Error("Unauthorized")
+
+        await GdprRepository.createAuditLog({
+            ...data,
+            companyId: user.id
+        })
+
+        revalidatePath('/dashboard/audits')
+        return { success: true }
+    } catch (error) {
+        console.error("Failed to create audit", error)
+        return { success: false, error: "Failed to create audit" }
+    }
+}
