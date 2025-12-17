@@ -131,13 +131,15 @@ create policy "Users can delete own breaches" on gdpr_data_breaches for delete u
 
 -- Trigger per creazione automatica profilo
 create or replace function public.handle_new_user()
-returns trigger as $$
+returns trigger
+security definer set search_path = public
+as $$
 begin
   insert into public.profiles (id, full_name)
   values (new.id, new.raw_user_meta_data->>'full_name');
   return new;
 end;
-$$ language plpgsql security definer;
+$$ language plpgsql;
 
 -- Rimuovi il trigger se esiste già per evitar duplicati in fase di sviluppo
 drop trigger if exists on_auth_user_created on auth.users;
