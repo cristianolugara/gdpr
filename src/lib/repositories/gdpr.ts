@@ -2,7 +2,10 @@ import { createClient } from '@/lib/supabase/server'
 import {
     ProcessingActivity,
     GdprSubjectRequest,
-    DataBreachIncident
+    DataBreachIncident,
+    GdprVendor,
+    GdprTraining,
+    GdprAuditLog
 } from '@/types/gdpr'
 
 export const GdprRepository = {
@@ -213,6 +216,136 @@ export const GdprRepository = {
             console.error('Error creating breach:', error)
             throw error
         }
+        return data
+    },
+
+    // --- Vendors ---
+    async getVendors(userId: string): Promise<GdprVendor[]> {
+        const supabase = await createClient()
+        const { data, error } = await supabase
+            .from('gdpr_vendors')
+            .select('*')
+            .eq('user_id', userId)
+            .order('name', { ascending: true })
+
+        if (error) return []
+
+        return data.map((item: any) => ({
+            id: item.id,
+            companyId: item.user_id,
+            name: item.name,
+            serviceType: item.service_type,
+            contactInfo: item.contact_info,
+            dpaStatus: item.dpa_status,
+            dpaDocumentId: item.dpa_document_id,
+            securityAssessmentStatus: item.security_assessment_status,
+            lastAssessmentDate: item.last_assessment_date,
+            nextAssessmentDate: item.next_assessment_date,
+            notes: item.notes,
+            createdAt: item.created_at,
+            updatedAt: item.updated_at
+        }))
+    },
+
+    async createVendor(vendor: Omit<GdprVendor, 'id' | 'createdAt' | 'updatedAt'>) {
+        const supabase = await createClient()
+        const dbData = {
+            user_id: vendor.companyId,
+            name: vendor.name,
+            service_type: vendor.serviceType,
+            contact_info: vendor.contactInfo,
+            dpa_status: vendor.dpaStatus,
+            dpa_document_id: vendor.dpaDocumentId,
+            security_assessment_status: vendor.securityAssessmentStatus,
+            last_assessment_date: vendor.lastAssessmentDate,
+            next_assessment_date: vendor.nextAssessmentDate,
+            notes: vendor.notes
+        }
+
+        const { data, error } = await supabase.from('gdpr_vendors').insert(dbData).select().single()
+        if (error) throw error
+        return data
+    },
+
+    // --- Training ---
+    async getTraining(userId: string): Promise<GdprTraining[]> {
+        const supabase = await createClient()
+        const { data, error } = await supabase
+            .from('gdpr_training')
+            .select('*')
+            .eq('user_id', userId)
+            .order('date', { ascending: false })
+
+        if (error) return []
+
+        return data.map((item: any) => ({
+            id: item.id,
+            companyId: item.user_id,
+            title: item.title,
+            description: item.description,
+            date: item.date,
+            durationMinutes: item.duration_minutes,
+            attendees: item.attendees,
+            materialsDocumentId: item.materials_document_id,
+            createdAt: item.created_at
+        }))
+    },
+
+    async createTraining(training: Omit<GdprTraining, 'id' | 'createdAt'>) {
+        const supabase = await createClient()
+        const dbData = {
+            user_id: training.companyId,
+            title: training.title,
+            description: training.description,
+            date: training.date,
+            duration_minutes: training.durationMinutes,
+            attendees: training.attendees,
+            materials_document_id: training.materialsDocumentId
+        }
+        const { data, error } = await supabase.from('gdpr_training').insert(dbData).select().single()
+        if (error) throw error
+        return data
+    },
+
+    // --- Audits ---
+    async getAuditLogs(userId: string): Promise<GdprAuditLog[]> {
+        const supabase = await createClient()
+        const { data, error } = await supabase
+            .from('gdpr_audit_logs')
+            .select('*')
+            .eq('user_id', userId)
+            .order('date', { ascending: false })
+
+        if (error) return []
+
+        return data.map((item: any) => ({
+            id: item.id,
+            companyId: item.user_id,
+            type: item.type,
+            status: item.status,
+            date: item.date,
+            performedBy: item.performed_by,
+            notes: item.notes,
+            nextCheckDate: item.next_check_date,
+            evidenceDocumentId: item.evidence_document_id,
+            createdAt: item.created_at
+        }))
+    },
+
+    async createAuditLog(log: Omit<GdprAuditLog, 'id' | 'createdAt'>) {
+        const supabase = await createClient()
+        const dbData = {
+            user_id: log.companyId,
+            type: log.type,
+            status: log.status,
+            date: log.date,
+            performed_by: log.performedBy,
+            notes: log.notes,
+            next_check_date: log.nextCheckDate,
+            evidence_document_id: log.evidenceDocumentId
+        }
+        const { data, error } = await supabase.from('gdpr_audit_logs').insert(dbData).select().single()
+        if (error) throw error
         return data
     }
 }

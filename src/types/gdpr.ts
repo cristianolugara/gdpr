@@ -107,3 +107,46 @@ export interface ProcessingActivity {
     createdAt: string;
     updatedAt: string;
 }
+
+export interface GdprVendor {
+    id: string;
+    companyId: string;
+    name: string;
+    serviceType?: string;
+    contactInfo?: string;
+    dpaStatus: 'SIGNED' | 'MISSING' | 'NOT_REQUIRED';
+    dpaDocumentId?: string;
+    securityAssessmentStatus: 'APPROVED' | 'REJECTED' | 'PENDING';
+    lastAssessmentDate?: string;
+    nextAssessmentDate?: string;
+    notes?: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface GdprTraining {
+    id: string;
+    companyId: string;
+    title: string;
+    description?: string;
+    date: string;
+    durationMinutes?: number;
+    attendees: string[]; // List of names/emails
+    materialsDocumentId?: string;
+    createdAt: string;
+}
+
+export type GdprAuditType = 'SECURITY_CHECK' | 'BACKUP_CHECK' | 'ANNUAL_AUDIT' | 'DPO_CHECK';
+
+export interface GdprAuditLog {
+    id: string;
+    companyId: string;
+    type: GdprAuditType;
+    status: 'PASS' | 'FAIL' | 'WARNING';
+    date: string;
+    performedBy?: string;
+    notes?: string;
+    nextCheckDate?: string;
+    evidenceDocumentId?: string; // Link to a report/screenshot
+    createdAt: string;
+}
