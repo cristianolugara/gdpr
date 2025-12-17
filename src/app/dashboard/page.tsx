@@ -8,6 +8,7 @@ import {
 import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
+import { TaskFlow } from "@/components/dashboard/TaskFlow"
 
 export default async function DashboardPage() {
     const supabase = await createClient()
@@ -44,14 +45,57 @@ export default async function DashboardPage() {
     const actionsRequired = (totalProjects - compliantProjects)
 
     // Fetch Recent Documents
-    const { data: recentDocs, error: recentDocsError } = await supabase
+    const { data: recentDocs } = await supabase
         .from('documents')
         .select('*')
         .order('created_at', { ascending: false })
         .limit(5)
 
+    // --- TASK FLOW CHECKS ---
+    const lastMonth = new Date()
+    lastMonth.setMonth(lastMonth.getMonth() - 1)
+    const lastMonthISO = lastMonth.toISOString()
+
+    // 1. Check Profile (Full Name exists is guaranteed by auth, check company name maybe?)
+    const hasProfile = !!(user.user_metadata.full_name || userName)
+
+    // 2. Check Activities
+    const { count: activitiesCount } = await supabase.from('gdpr_processing_activities').select('*', { count: 'exact', head: true }).eq('user_id', user.id)
+
+    // 3. Check Vendors
+    const { count: vendorsCount } = await supabase.from('gdpr_vendors').select('*', { count: 'exact', head: true }).eq('user_id', user.id)
+
+    // 4. Check Training
+    const { count: trainingCount } = await supabase.from('gdpr_training').select('*', { count: 'exact', head: true }).eq('user_id', user.id)
+
+    // 5. Check Recent Security Audit
+    const { count: securityCount } = await supabase.from('gdpr_audit_logs')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('type', 'SECURITY_CHECK')
+        .gte('date', lastMonthISO)
+
+    // 6. Check Recent Backup Audit
+    const { count: backupCount } = await supabase.from('gdpr_audit_logs')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .eq('type', 'BACKUP_CHECK')
+        .gte('date', lastMonthISO)
+
+    const taskStatus = {
+        hasProfile: true, // Assuming basic profile is there if logged in
+        hasActivities: (activitiesCount || 0) > 0,
+        hasVendors: (vendorsCount || 0) > 0,
+        hasTraining: (trainingCount || 0) > 0,
+        hasRecentSecurityCheck: (securityCount || 0) > 0,
+        hasRecentBackupCheck: (backupCount || 0) > 0
+    }
+
     return (
         <div className="space-y-8">
+            {/* Task Flow / Onboarding */}
+            <TaskFlow status={taskStatus} />
+
             {/* Hero / Welcome */}
             <div>
                 <h2 className="text-3xl font-bold tracking-tight">Ciao, {userName}</h2>
