@@ -8,7 +8,10 @@ import {
     Settings,
     LogOut,
     Users,
-    AlertTriangle
+    AlertTriangle,
+    Briefcase,
+    GraduationCap,
+    ClipboardList
 } from "lucide-react"
 
 export default function DashboardLayout({
@@ -31,51 +34,79 @@ export default function DashboardLayout({
                 </div>
                 <div className="flex-1 overflow-y-auto py-4">
                     <nav className="grid gap-1 px-2 text-sm font-medium">
+                        <div className="px-3 py-2 text-xs font-bold uppercase text-slate-500 mt-2">Generale</div>
                         <Link
                             href="/dashboard"
-                            className="flex items-center gap-3 rounded-lg bg-slate-100 px-3 py-2 text-slate-900 transition-all hover:text-slate-900 dark:bg-slate-800 dark:text-slate-50"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
                         >
                             <LayoutDashboard className="h-4 w-4" />
                             Dashboard
                         </Link>
                         <Link
                             href="/dashboard/documents"
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
                         >
                             <FileText className="h-4 w-4" />
                             Generatore Documenti
                         </Link>
+
+                        <div className="px-3 py-2 text-xs font-bold uppercase text-slate-500 mt-4">Registri & Adempimenti</div>
                         <Link
                             href="/dashboard/register"
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
                         >
                             <ShieldAlert className="h-4 w-4" />
                             Registro Trattamenti
                         </Link>
                         <Link
+                            href="/dashboard/vendors"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
+                        >
+                            <Briefcase className="h-4 w-4" />
+                            Registro Fornitori
+                        </Link>
+                        <Link
+                            href="/dashboard/training"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
+                        >
+                            <GraduationCap className="h-4 w-4" />
+                            Registro Formazione
+                        </Link>
+                        <Link
+                            href="/dashboard/audits"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
+                        >
+                            <ClipboardList className="h-4 w-4" />
+                            Registro Controlli
+                        </Link>
+
+                        <div className="px-3 py-2 text-xs font-bold uppercase text-slate-500 mt-4">Gestione Eventi</div>
+                        <Link
                             href="/dashboard/requests"
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
                         >
                             <Users className="h-4 w-4" />
                             Richieste Interessati
                         </Link>
                         <Link
                             href="/dashboard/breach"
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
                         >
                             <AlertTriangle className="h-4 w-4" />
                             Data Breach
                         </Link>
+
+                        <div className="px-3 py-2 text-xs font-bold uppercase text-slate-500 mt-4">Strumenti</div>
                         <Link
                             href="/dashboard/ai-assistant"
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
                         >
                             <Bot className="h-4 w-4" />
                             Assistente AI
                         </Link>
                         <Link
                             href="/dashboard/settings"
-                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50"
+                            className="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-50"
                         >
                             <Settings className="h-4 w-4" />
                             Impostazioni
