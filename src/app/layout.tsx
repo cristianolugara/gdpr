@@ -9,8 +9,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "GDPR Compliance Dashboard",
-  description: "AI-powered GDPR compliance and management platform.",
+  title: "Dashboard Conformità GDPR",
+  description: "Piattaforma di gestione e conformità GDPR potenziata dall'IA.",
 };
 
 export default function RootLayout({
