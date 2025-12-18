@@ -183,6 +183,60 @@ export default function SettingsForm({ initialData }: { initialData: CompanySett
                 </div>
             </div>
 
+            {/* Referenti & Privacy */}
+            <div className="rounded-xl border bg-white p-6 shadow-sm dark:bg-slate-900">
+                <div className="flex items-center gap-3 mb-6">
+                    <div className="p-2 bg-amber-100 text-amber-600 rounded-lg dark:bg-amber-900/30">
+                        <FileText className="h-5 w-5" />
+                    </div>
+                    <div>
+                        <h3 className="text-lg font-semibold">Referenti & Privacy</h3>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Informazioni per la compilazione dei documenti (Nomine, DPA).</p>
+                    </div>
+                </div>
+
+                <div className="space-y-4">
+                    <div className="space-y-2">
+                        <label htmlFor="legal_representative" className="text-sm font-medium">Legale Rappresentante *</label>
+                        <input
+                            type="text"
+                            name="legal_representative"
+                            id="legal_representative"
+                            required
+                            defaultValue={initialData?.legal_representative || ''}
+                            placeholder="Nome e Cognome del firmatario"
+                            className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:border-slate-700"
+                        />
+                        <p className="text-xs text-slate-500">Colui che firmerà i contratti e le nomine.</p>
+                    </div>
+
+                    <div className="grid gap-6 md:grid-cols-2">
+                        <div className="space-y-2">
+                            <label htmlFor="dpo_name" className="text-sm font-medium">Nome DPO (Opzionale)</label>
+                            <input
+                                type="text"
+                                name="dpo_name"
+                                id="dpo_name"
+                                defaultValue={initialData?.dpo_name || ''}
+                                placeholder="Nome Cognome o Società DPO"
+                                className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:border-slate-700"
+                            />
+                        </div>
+                        <div className="space-y-2">
+                            <label htmlFor="dpo_email" className="text-sm font-medium">Email DPO (Opzionale)</label>
+                            <input
+                                type="email"
+                                name="dpo_email"
+                                id="dpo_email"
+                                defaultValue={initialData?.dpo_email || ''}
+                                placeholder="dpo@azienda.it"
+                                className="w-full rounded-md border border-slate-300 bg-transparent px-3 py-2 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:border-slate-700"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div className="flex justify-end">
                 <button
                     type="submit"
@@ -202,6 +256,6 @@ export default function SettingsForm({ initialData }: { initialData: CompanySett
                     )}
                 </button>
             </div>
-        </form>
+        </form >
     )
 }

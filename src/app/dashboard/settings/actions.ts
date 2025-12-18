@@ -25,6 +25,9 @@ export async function saveCompanySettings(formData: FormData) {
         email: formData.get('email') as string,
         pec: formData.get('pec') as string,
         phone: formData.get('phone') as string,
+        legal_representative: formData.get('legal_representative') as string,
+        dpo_name: formData.get('dpo_name') as string,
+        dpo_email: formData.get('dpo_email') as string,
     }
 
     // Basic validation (can be improved)

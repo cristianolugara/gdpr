@@ -99,3 +99,35 @@ drop policy if exists "Users can update own audits" on gdpr_audit_logs;
 create policy "Users can update own audits" on gdpr_audit_logs for update using ((select auth.uid()) = user_id);
 drop policy if exists "Users can delete own audits" on gdpr_audit_logs;
 create policy "Users can delete own audits" on gdpr_audit_logs for delete using ((select auth.uid()) = user_id);
+
+-- Tabella Company Settings (Dati Aziendali per Documenti)
+create table if not exists public.companies (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references public.profiles(id) on delete cascade not null,
+  name text not null, -- Ragione Sociale
+  address text,
+  city text,
+  zip_code text,
+  vat_number text,
+  tax_code text,
+  email text,
+  pec text, -- PEC
+  phone text,
+  legal_representative text, -- Legale Rappresentante (per firme)
+  dpo_name text, -- Nome DPO (opzionale)
+  dpo_email text, -- Contatto DPO (opzionale)
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  constraint companies_user_id_key unique (user_id)
+);
+
+-- RLS per Companies
+alter table public.companies enable row level security;
+drop policy if exists "Users can view own company" on companies;
+create policy "Users can view own company" on companies for select using ((select auth.uid()) = user_id);
+drop policy if exists "Users can insert own company" on companies;
+create policy "Users can insert own company" on companies for insert with check ((select auth.uid()) = user_id);
+drop policy if exists "Users can update own company" on companies;
+create policy "Users can update own company" on companies for update using ((select auth.uid()) = user_id);
+drop policy if exists "Users can delete own company" on companies;
+create policy "Users can delete own company" on companies for delete using ((select auth.uid()) = user_id);

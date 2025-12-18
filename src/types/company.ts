@@ -10,6 +10,9 @@ export type CompanySettings = {
     email: string
     pec: string
     phone: string
+    legal_representative: string
+    dpo_name?: string
+    dpo_email?: string
     created_at?: string
     updated_at?: string
 }
