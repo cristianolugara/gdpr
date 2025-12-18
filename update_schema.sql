@@ -131,3 +131,33 @@ drop policy if exists "Users can update own company" on companies;
 create policy "Users can update own company" on companies for update using ((select auth.uid()) = user_id);
 drop policy if exists "Users can delete own company" on companies;
 create policy "Users can delete own company" on companies for delete using ((select auth.uid()) = user_id);
+
+-- Tabella Personale/Staff (Gestione Nomine e NDA - Doc 12)
+create table if not exists public.gdpr_staff (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references public.profiles(id) on delete cascade not null,
+  first_name text not null,
+  last_name text not null,
+  email text,
+  role text, -- Ruolo/Mansione
+  employment_type text default 'INTERNAL', -- 'INTERNAL' (Dipendente), 'EXTERNAL' (Collaboratore), 'AUTONOMOUS' (Autonomo)
+  appointment_date timestamp with time zone,
+  has_signed_appointment boolean default false, -- Lettera di Nomina firmata?
+  appointment_doc_id uuid references public.documents(id) on delete set null,
+  has_signed_nda boolean default false, -- NDA firmato?
+  nda_doc_id uuid references public.documents(id) on delete set null,
+  status text default 'ACTIVE', -- 'ACTIVE', 'TERMINATED'
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- RLS per Staff
+alter table public.gdpr_staff enable row level security;
+drop policy if exists "Users can view own staff" on gdpr_staff;
+create policy "Users can view own staff" on gdpr_staff for select using ((select auth.uid()) = user_id);
+drop policy if exists "Users can insert own staff" on gdpr_staff;
+create policy "Users can insert own staff" on gdpr_staff for insert with check ((select auth.uid()) = user_id);
+drop policy if exists "Users can update own staff" on gdpr_staff;
+create policy "Users can update own staff" on gdpr_staff for update using ((select auth.uid()) = user_id);
+drop policy if exists "Users can delete own staff" on gdpr_staff;
+create policy "Users can delete own staff" on gdpr_staff for delete using ((select auth.uid()) = user_id);
