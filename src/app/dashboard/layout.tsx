@@ -126,7 +126,7 @@ export default function DashboardLayout({
                         Logout
                     </button>
                     <div className="mt-4 px-3 text-xs text-slate-400 dark:text-slate-600">
-                        v1.0.1 (de6e49c)
+                        v1.0.2 ({process.env.NEXT_PUBLIC_COMMIT_SHA?.substring(0, 7) || 'dev'})
                     </div>
                 </div>
             </aside>
