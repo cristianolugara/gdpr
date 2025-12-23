@@ -211,3 +211,47 @@ create policy "Users can view own audits" on gdpr_audit_logs for select using ((
 create policy "Users can insert own audits" on gdpr_audit_logs for insert with check ((select auth.uid()) = user_id);
 create policy "Users can update own audits" on gdpr_audit_logs for update using ((select auth.uid()) = user_id);
 create policy "Users can delete own audits" on gdpr_audit_logs for delete using ((select auth.uid()) = user_id);
+-- Tabella Valutazione d'Impatto (DPIA) - Art. 35 GDPR
+-- Dal Manuale: Analisi dei rischi (Probabilità x Gravità) e necessità per trattamenti su larga scala/profilazione.
+
+create table if not exists public.gdpr_dpia (
+  id uuid default gen_random_uuid() primary key,
+  user_id uuid references public.profiles(id) on delete cascade not null,
+  name text not null, -- Nome del trattamento o progetto
+  description text,
+  
+  -- Fattori di necessità (Screening)
+  is_large_scale boolean default false,
+  is_profiling boolean default false,
+  is_public_monitoring boolean default false,
+  is_mandatory boolean default false, -- Se true, la DPIA è obbligatoria
+  
+  -- Analisi del Rischio (Metodo Orizzontale/Verticale manuale)
+  risk_description text,
+  likelihood_score integer, -- 1-4 (Basso, Medio, Alto, Molto Alto)
+  severity_score integer, -- 1-4
+  risk_level text, -- 'LOW', 'MEDIUM', 'HIGH', 'CRITICAL'
+  
+  -- Misure
+  mitigation_measures text, -- Misure tecniche/organizzative per ridurre il rischio
+  residual_risk_level text, -- Rischio residuo dopo misure
+  
+  -- Consultazioni
+  dpo_opinion text, -- Parere del DPO
+  
+  status text default 'DRAFT', -- 'DRAFT', 'COMPLETED', 'REVIEWED'
+  created_at timestamp with time zone default timezone('utc'::text, now()) not null,
+  updated_at timestamp with time zone default timezone('utc'::text, now()) not null
+);
+
+-- RLS per DPIA
+alter table public.gdpr_dpia enable row level security;
+drop policy if exists "Users can view own dpia" on gdpr_dpia;
+create policy "Users can view own dpia" on gdpr_dpia for select using ((select auth.uid()) = user_id);
+drop policy if exists "Users can insert own dpia" on gdpr_dpia;
+create policy "Users can insert own dpia" on gdpr_dpia for insert with check ((select auth.uid()) = user_id);
+drop policy if exists "Users can update own dpia" on gdpr_dpia;
+create policy "Users can update own dpia" on gdpr_dpia for update using ((select auth.uid()) = user_id);
+drop policy if exists "Users can delete own dpia" on gdpr_dpia;
+create policy "Users can delete own dpia" on gdpr_dpia for delete using ((select auth.uid()) = user_id);
+
