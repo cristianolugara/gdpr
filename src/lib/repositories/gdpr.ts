@@ -347,5 +347,62 @@ export const GdprRepository = {
         const { data, error } = await supabase.from('gdpr_audit_logs').insert(dbData).select().single()
         if (error) throw error
         return data
+    },
+
+    // --- DPIA (Data Protection Impact Assessment) ---
+    async getDpias(userId: string): Promise<import('@/types/gdpr').GdprDpia[]> {
+        const supabase = await createClient()
+        const { data, error } = await supabase
+            .from('gdpr_dpia')
+            .select('*')
+            .eq('user_id', userId)
+            .order('created_at', { ascending: false })
+
+        if (error) return []
+
+        return data.map((item: any) => ({
+            id: item.id,
+            companyId: item.user_id,
+            name: item.name,
+            description: item.description,
+            isLargeScale: item.is_large_scale,
+            isProfiling: item.is_profiling,
+            isPublicMonitoring: item.is_public_monitoring,
+            isMandatory: item.is_mandatory,
+            riskDescription: item.risk_description,
+            likelihoodScore: item.likelihood_score,
+            severityScore: item.severity_score,
+            riskLevel: item.risk_level,
+            mitigationMeasures: item.mitigation_measures,
+            residualRiskLevel: item.residual_risk_level,
+            dpoOpinion: item.dpo_opinion,
+            status: item.status,
+            createdAt: item.created_at,
+            updatedAt: item.updated_at
+        }))
+    },
+
+    async createDpia(dpia: Omit<import('@/types/gdpr').GdprDpia, 'id' | 'createdAt' | 'updatedAt'>) {
+        const supabase = await createClient()
+        const dbData = {
+            user_id: dpia.companyId,
+            name: dpia.name,
+            description: dpia.description,
+            is_large_scale: dpia.isLargeScale,
+            is_profiling: dpia.isProfiling,
+            is_public_monitoring: dpia.isPublicMonitoring,
+            is_mandatory: dpia.isMandatory,
+            risk_description: dpia.riskDescription,
+            likelihood_score: dpia.likelihoodScore,
+            severity_score: dpia.severityScore,
+            risk_level: dpia.riskLevel,
+            mitigation_measures: dpia.mitigationMeasures,
+            residual_risk_level: dpia.residualRiskLevel,
+            dpo_opinion: dpia.dpoOpinion,
+            status: dpia.status
+        }
+        const { data, error } = await supabase.from('gdpr_dpia').insert(dbData).select().single()
+        if (error) throw error
+        return data
     }
 }

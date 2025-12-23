@@ -136,3 +136,25 @@ export async function createAuditAction(data: Omit<GdprAuditLog, 'id' | 'company
         return { success: false, error: "Failed to create audit" }
     }
 }
+
+// --- DPIA ---
+export async function createDpia(data: Omit<import("@/types/gdpr").GdprDpia, 'id' | 'companyId' | 'createdAt' | 'updatedAt'>) {
+    try {
+        const supabase = await createClient()
+        const { data: { user } } = await supabase.auth.getUser()
+
+        if (!user) throw new Error("Unauthorized")
+
+        // We return the created object directly because the client might want to update the UI state immediately
+        const res = await GdprRepository.createDpia({
+            ...data,
+            companyId: user.id
+        })
+
+        revalidatePath('/dashboard/dpia')
+        return res
+    } catch (error) {
+        console.error("Failed to create DPIA", error)
+        throw error
+    }
+}

@@ -150,3 +150,36 @@ export interface GdprAuditLog {
     evidenceDocumentId?: string; // Link to a report/screenshot
     createdAt: string;
 }
+
+export type DpiaRiskLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+export type DpiaStatus = 'DRAFT' | 'COMPLETED' | 'REVIEWED';
+
+export interface GdprDpia {
+    id: string;
+    companyId: string;
+    name: string;
+    description?: string;
+
+    // Necessity Factors
+    isLargeScale: boolean;
+    isProfiling: boolean;
+    isPublicMonitoring: boolean;
+    isMandatory: boolean;
+
+    // Risk Analysis
+    riskDescription?: string;
+    likelihoodScore?: number; // 1-4
+    severityScore?: number; // 1-4
+    riskLevel?: DpiaRiskLevel;
+
+    // Mitigation
+    mitigationMeasures?: string;
+    residualRiskLevel?: DpiaRiskLevel;
+
+    // Consultation
+    dpoOpinion?: string;
+
+    status: DpiaStatus;
+    createdAt: string;
+    updatedAt: string;
+}
