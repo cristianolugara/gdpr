@@ -31,9 +31,8 @@ export default async function DashboardLayout({
             <aside className="hidden w-64 flex-col border-r bg-white dark:bg-slate-900 md:flex">
                 <div className="flex h-14 items-center border-b px-4">
                     <Link className="flex items-center gap-2 font-bold" href="/">
-                        <div className="rounded-md bg-primary p-1">
-                            {/* Logo icon placeholder */}
-                            <div className="h-4 w-4 bg-white rounded-full" />
+                        <div className="rounded-md bg-blue-600 p-1">
+                            <ShieldCheck className="h-4 w-4 text-white" />
                         </div>
                         <span>FastGDPR</span>
                     </Link>
