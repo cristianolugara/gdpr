@@ -64,3 +64,77 @@ _________________________                                  _____________________
 
     return doc;
 };
+
+export const generateDPA = (vendor: any, companyName: string, companyVat: string) => {
+    const doc = new jsPDF();
+    const currentDate = format(new Date(), 'd MMMM yyyy', { locale: it });
+
+    // HEADER
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('DATA PROCESSING AGREEMENT (NOMINA A RESPONSABILE)', 20, 20);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Ai sensi dell\'art. 28 del Regolamento UE 2016/679 (GDPR)', 20, 26);
+
+    // PARTIES
+    const partiesText = `
+TRA
+${companyName} (P.IVA: ${companyVat}), in qualità di Titolare del Trattamento ("Titolare")
+E
+${vendor.name} (P.IVA: ${vendor.vatNumber || '___________'}), in qualità di Responsabile del Trattamento ("Responsabile")
+
+PREMESSO CHE
+(A) Il Titolare affida al Responsabile alcuni servizi che implicano il trattamento di dati personali.
+(B) Le Parti intendono sottoscrivere il presente accordo per conformarsi all'art. 28 del GDPR.
+    `;
+    doc.setFontSize(11);
+    const splitParties = doc.splitTextToSize(partiesText, 170);
+    doc.text(splitParties, 20, 35);
+
+    // AGREEMENT BODY (Based on the provided English template, translated & adapted)
+    const bodyText = `
+SI CONVIENE E SI STIPULA QUANTO SEGUE:
+
+1. DEFINIZIONI
+I termini "Titolare", "Responsabile", "Dati Personali", "Trattamento", "Interessato" hanno il significato definito nel GDPR.
+
+2. OGGETTO DEL TRATTAMENTO
+Il Responsabile è autorizzato a trattare i dati personali per conto del Titolare esclusivamente per l'esecuzione dei servizi di: ${vendor.serviceType || '__________'} ("Servizi") e secondo le istruzioni documentate del Titolare.
+
+3. OBBLIGHI DEL RESPONSABILE
+Il Responsabile si impegna a:
+3.1 Trattare i dati solo su istruzione documentata del Titolare.
+3.2 Garantire che le persone autorizzate al trattamento si siano impegnate alla riservatezza.
+3.3 Adottare tutte le misure di sicurezza richieste dall'art. 32 del GDPR (misure tecniche e organizzative adeguate).
+3.4 Non ricorrere a un altro responsabile (Sub-responsabile) senza previa autorizzazione scritta del Titolare.
+3.5 Assistere il Titolare con misure tecniche e organizzative adeguate per soddisfare le richieste degli interessati (es. diritto di accesso, cancellazione).
+3.6 Assistere il Titolare nel garantire il rispetto degli obblighi di cui agli artt. 32-36 (sicurezza, notifica violazioni, DPIA).
+3.7 Cancellare o restituire tutti i dati personali al termine della prestazione dei servizi, salvo obblighi di legge.
+3.8 Mettere a disposizione le informazioni necessarie per dimostrare la conformità e contribuire a revisioni/ispezioni.
+
+4. TRASFERIMENTI DATI EXTRA-UE
+Il Responsabile non trasferirà dati fuori dallo Spazio Economico Europeo (SEE) senza il previo consenso scritto del Titolare e senza garanzie adeguate (es. Clausole Contrattuali Standard).
+Paesi trasferimenti attuali: ${vendor.dataTransferInfo || 'Nessuno / Solo UE'}.
+
+5. VIOLAZIONE DEI DATI (DATA BREACH)
+Il Responsabile notifica al Titolare qualsiasi violazione dei dati personali senza ingiustificato ritardo dopo averne avuto conoscenza.
+
+6. DURATA L'accordo è valido per tutta la durata del contratto di servizi principale.
+
+Luogo e Data: ${currentDate}
+
+IL TITOLARE                                                  IL RESPONSABILE
+${companyName}                                             ${vendor.name}
+
+___________________________                         ___________________________
+    `;
+
+    doc.setFontSize(10);
+    // Add text slightly lower to account for previous block
+    const splitBody = doc.splitTextToSize(bodyText, 170);
+    // Start body at roughly 80y (35 + height of parties ~40)
+    doc.text(splitBody, 20, 80);
+
+    return doc;
+};

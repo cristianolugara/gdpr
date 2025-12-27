@@ -6,6 +6,7 @@ import { Plus, Search, Filter, ShieldCheck, FileText, AlertTriangle, CheckCircle
 import { Button } from "@/components/ui/button"
 import { createVendorAction } from "@/app/actions/gdpr"
 import { useRouter } from "next/navigation"
+import { generateDPA } from "@/lib/services/pdfGenerator"
 
 interface VendorsClientProps {
     initialVendors: GdprVendor[]
@@ -89,6 +90,14 @@ export default function VendorsClient({ initialVendors }: VendorsClientProps) {
                 [id]: value
             }
         }))
+    }
+
+    const downloadDpa = (vendor: GdprVendor) => {
+        // Mock company data - in real app fetch from user profile/settings
+        const companyName = "Mia Azienda S.r.l."
+        const companyVat = "IT12345678901"
+        const doc = generateDPA(vendor, companyName, companyVat)
+        doc.save(`DPA_Nomina_Responsabile_${vendor.name.replace(/\s+/g, '_')}.pdf`)
     }
 
     return (
@@ -308,7 +317,13 @@ export default function VendorsClient({ initialVendors }: VendorsClientProps) {
                     <div className="h-full w-full max-w-md bg-white p-6 shadow-2xl dark:bg-slate-900 dark:border-l dark:border-slate-800 overflow-y-auto" onClick={e => e.stopPropagation()}>
                         <div className="flex items-center justify-between mb-8">
                             <h3 className="text-xl font-bold">{selectedVendor.name}</h3>
-                            <Button variant="ghost" size="sm" onClick={() => setSelectedVendor(null)}>Chiudi</Button>
+                            <div className="flex gap-2">
+                                <Button size="sm" variant="outline" onClick={() => downloadDpa(selectedVendor)}>
+                                    <FileText className="mr-2 h-3 w-3" />
+                                    Scarica DPA
+                                </Button>
+                                <Button variant="ghost" size="sm" onClick={() => setSelectedVendor(null)}>Chiudi</Button>
+                            </div>
                         </div>
 
                         <div className="space-y-6">
