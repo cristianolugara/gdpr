@@ -14,12 +14,17 @@ import {
     ClipboardList,
     ShieldCheck
 } from "lucide-react"
+import { createClient } from "@/lib/supabase/server"
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    const userEmail = user?.email || 'utente@esempio.com'
+
     return (
         <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-slate-950">
             {/* Sidebar */}
@@ -128,14 +133,18 @@ export default function DashboardLayout({
                         </Link>
                     </nav>
                 </div>
-                <div className="mt-4 border-t pt-4">
-                    <button className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-slate-500 transition-all hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-50">
-                        <LogOut className="h-4 w-4" />
-                        Logout
-                    </button>
-                    <div className="mt-4 px-3 text-xs text-slate-400 dark:text-slate-600">
-                        v1.0.2 ({process.env.NEXT_PUBLIC_COMMIT_SHA?.substring(0, 7) || 'dev'})
+                <div className="mt-4 border-t/20 border-slate-200 dark:border-slate-800 pt-4 bg-slate-50/50 dark:bg-slate-900/50 pb-4">
+                    <div className="px-4 mb-3">
+                        <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Utente</p>
+                        <p className="text-sm font-semibold truncate text-slate-700 dark:text-slate-300 pointer-events-none" title={userEmail}>
+                            {userEmail}
+                        </p>
                     </div>
+                    <button className="flex w-full items-center gap-3 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/10 transition-colors">
+                        <LogOut className="h-4 w-4" />
+                        Diconnetti
+                    </button>
+                    {/* Removed static version display as requested */}
                 </div>
             </aside>
 
