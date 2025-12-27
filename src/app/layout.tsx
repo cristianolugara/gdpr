@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Dashboard Conformità GDPR",
+  title: "FastGDPR - Dashboard Conformità",
   description: "Piattaforma di gestione e conformità GDPR potenziata dall'IA.",
 };
 

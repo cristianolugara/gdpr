@@ -35,7 +35,7 @@ export default async function DashboardLayout({
                             {/* Logo icon placeholder */}
                             <div className="h-4 w-4 bg-white rounded-full" />
                         </div>
-                        <span>GDPR Tool</span>
+                        <span>FastGDPR</span>
                     </Link>
                 </div>
                 <div className="flex-1 overflow-y-auto py-4">

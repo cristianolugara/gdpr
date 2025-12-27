@@ -12,7 +12,7 @@ export default function Home() {
             <div className="rounded-lg bg-blue-600 p-1.5">
               <ShieldCheck className="h-5 w-5 text-white" />
             </div>
-            <span>Antigravity GDPR</span>
+            <span>FastGDPR</span>
           </Link>
           <nav className="ml-auto flex gap-4 sm:gap-6">
             <Link className="text-sm font-medium hover:text-blue-600 transition-colors" href="#features">
@@ -191,7 +191,7 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div className="space-y-6">
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
-                  Perché scegliere Antigravity GDPR?
+                  Perché scegliere FastGDPR?
                 </h2>
                 <p className="text-lg text-slate-500 dark:text-slate-400">
                   Non siamo solo un software, ma un metodo di lavoro strutturato per garantire la serenità della tua azienda.
@@ -261,7 +261,7 @@ export default function Home() {
         <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2 font-bold text-slate-900 dark:text-white">
             <ShieldCheck className="h-5 w-5" />
-            Antigravity GDPR
+            FastGDPR
           </div>
           <div className="flex gap-8">
             <Link href="#" className="hover:text-slate-900 dark:hover:text-white transition-colors">Privacy Policy</Link>
