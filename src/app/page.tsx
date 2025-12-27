@@ -44,7 +44,7 @@ export default function Home() {
             </div>
 
             <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600 dark:from-white dark:to-slate-400 pb-2">
-              Conformità GDPR Semplice <br className="hidden sm:inline" />
+              Conformità GDPR Semplice e Veloce <br className="hidden sm:inline" />
               <span className="text-blue-600">Potenziata dall'Intelligenza Artificiale</span>
             </h1>
 
