@@ -138,3 +138,40 @@ ___________________________                         ___________________________
 
     return doc;
 };
+
+// New function for Subject Access Requests (Docs 6-10)
+export const generateResponsePDF = (request: any, companyName: string, templateContent: string) => {
+    const doc = new jsPDF();
+    const currentDate = format(new Date(), 'd MMMM yyyy', { locale: it });
+
+    // HEADER
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('RISPOSTA A ESERCIZIO DIRITTI INTERESSATO', 20, 20);
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    // Subtitle based on request type
+    const subtitle = `Rif. Richiesta del ${new Date(request.requestDate).toLocaleDateString()} - Protocollo: ${request.id.substring(0, 8)}`;
+    doc.text(subtitle, 20, 26);
+
+    // Dynamic Content Replacement
+    // The templateContent passed here should already have simple placeholders replaced by the component, 
+    // but we can do a final pass or just render it.
+    // However, to ensure clean PDF rendering, let's assume the component passes the "raw" replaced text.
+
+    // If we want to replace here:
+    // This logic duplicates what the UI might do, but ensures the PDF is self-contained.
+    let finalBody = templateContent;
+
+    // We expect the 'templateContent' to be the full body text.
+    // Let's add the formal header/footer structure.
+
+    doc.setFontSize(11);
+    const splitBody = doc.splitTextToSize(finalBody, 170);
+    doc.text(splitBody, 20, 40);
+
+    // Footer if not present in the body
+    // doc.text(`Generato da GDPR Tool il ${currentDate}`, 20, 280);
+
+    return doc;
+};

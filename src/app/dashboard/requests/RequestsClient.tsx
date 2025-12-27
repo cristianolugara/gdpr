@@ -6,6 +6,7 @@ import { GDPR_TEMPLATES } from "@/lib/data/gdpr-templates"
 import { Button } from "@/components/ui/button"
 // Removed missing imports
 import { createRequestAction } from "@/app/actions/gdpr"
+import { generateResponsePDF } from "@/lib/services/pdfGenerator"
 import {
     Plus,
     Search,
@@ -377,7 +378,21 @@ export default function RequestsClient({ initialRequests, userName, companyName 
 
                         <div className="mt-6 flex justify-end gap-2">
                             <Button variant="outline" onClick={() => setSelectedRequest(null)}>Chiudi</Button>
-                            <Button>Genera PDF Risposta</Button>
+                            <Button onClick={() => {
+                                if (!selectedRequest) return;
+                                const content = GDPR_TEMPLATES[selectedRequest.type]?.content
+                                    .replace('{{requesterName}}', selectedRequest.requesterName)
+                                    .replace('{{city}}', 'Genova')
+                                    .replace('{{date}}', new Date().toLocaleDateString())
+                                    .replace('{{companyName}}', companyName || 'La Tua Azienda')
+                                    .replace('{{handlerName}}', userName || 'Il Titolare')
+                                    .replace('{{handlerPosition}}', 'Titolare del Trattamento')
+                                    .replace('{{dpoName}}', 'DPO Interno')
+                                    .replace('{{dpoEmail}}', 'dpo@azienda.it') || "";
+
+                                const doc = generateResponsePDF(selectedRequest, companyName || "Azienda", content);
+                                doc.save(`Risposta_${selectedRequest.type}_${selectedRequest.requesterName.replace(/\s+/g, '_')}.pdf`);
+                            }}>Genera PDF Risposta</Button>
                         </div>
                     </div>
                 </div>
