@@ -202,6 +202,25 @@ export default async function DashboardPage() {
                         </div>
                     </div>
                 </div>
+
+                {/* Website Audit (From Manual) */}
+                <div className="relative overflow-hidden rounded-xl border bg-white p-6 shadow-sm dark:bg-slate-900 group hover:border-orange-500 transition-colors cursor-pointer" id="web-audit-btn">
+                    <Link href="/dashboard/audits" className="absolute inset-0 z-10" />
+                    <div className="flex flex-col justify-between h-full">
+                        <div>
+                            <div className="mb-4 inline-flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100 text-orange-600 dark:bg-orange-900/30">
+                                <AlertCircle className="h-6 w-6" />
+                            </div>
+                            <h3 className="text-lg font-semibold">Audit Sito Web</h3>
+                            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+                                Verifica Cookie Banner, Privacy Policy e Form in base alla nuova Checklist 2025.
+                            </p>
+                        </div>
+                        <div className="mt-4 flex items-center text-sm font-medium text-orange-600 group-hover:underline">
+                            Avvia Controllo <ArrowRight className="ml-1 h-4 w-4" />
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Recent Documents Table */}
