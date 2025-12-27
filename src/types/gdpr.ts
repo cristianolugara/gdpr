@@ -113,7 +113,16 @@ export interface GdprVendor {
     companyId: string;
     name: string;
     serviceType?: string;
+    vatNumber?: string;
     contactInfo?: string;
+    pec?: string;
+    dpoContact?: string;
+    processingCategory?: string;
+    businessFunction?: string;
+    subProcessors?: string;
+    dataTransferInfo?: string;
+    securityMeasuresDescription?: string;
+    assessmentData?: any; // JSON for Doc 22 Checklist
     dpaStatus: 'SIGNED' | 'MISSING' | 'NOT_REQUIRED';
     dpaDocumentId?: string;
     securityAssessmentStatus: 'APPROVED' | 'REJECTED' | 'PENDING';

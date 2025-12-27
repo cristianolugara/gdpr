@@ -7,6 +7,9 @@ export type StaffMember = {
     email?: string
     role?: string
     employment_type: 'INTERNAL' | 'EXTERNAL' | 'AUTONOMOUS'
+    is_system_admin: boolean
+    is_privacy_ref: boolean
+    processing_allowance?: string
     appointment_date?: string
     has_signed_appointment: boolean
     appointment_doc_id?: string

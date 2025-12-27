@@ -29,7 +29,15 @@ create table if not exists public.gdpr_vendors (
   user_id uuid references public.profiles(id) on delete cascade not null,
   name text not null,
   service_type text, -- 'Hosting', 'Payroll', 'CRM', etc.
+  vat_number text, -- P.IVA / CF
   contact_info text,
+  pec text, -- PEC
+  dpo_contact text, -- Nome e contatti DPO
+  processing_category text, -- Categoria del trattamento
+  business_function text, -- Funzione di business / Dip.
+  sub_processors text, -- Sub-responsabili
+  data_transfer_info text, -- Trasferimento dati extra UE
+  security_measures_description text, -- Descrizione misure sicurezza
   dpa_status text default 'MISSING', -- 'SIGNED', 'MISSING', 'NOT_REQUIRED'
   dpa_document_id uuid references public.documents(id) on delete set null,
   security_assessment_status text default 'PENDING', -- 'APPROVED', 'REJECTED', 'PENDING'
@@ -39,6 +47,38 @@ create table if not exists public.gdpr_vendors (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
+
+-- Add columns to gdpr_vendors if they don't exist
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_vendors' AND column_name = 'vat_number') THEN
+        ALTER TABLE public.gdpr_vendors ADD COLUMN vat_number text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_vendors' AND column_name = 'pec') THEN
+        ALTER TABLE public.gdpr_vendors ADD COLUMN pec text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_vendors' AND column_name = 'dpo_contact') THEN
+        ALTER TABLE public.gdpr_vendors ADD COLUMN dpo_contact text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_vendors' AND column_name = 'processing_category') THEN
+        ALTER TABLE public.gdpr_vendors ADD COLUMN processing_category text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_vendors' AND column_name = 'business_function') THEN
+        ALTER TABLE public.gdpr_vendors ADD COLUMN business_function text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_vendors' AND column_name = 'sub_processors') THEN
+        ALTER TABLE public.gdpr_vendors ADD COLUMN sub_processors text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_vendors' AND column_name = 'data_transfer_info') THEN
+        ALTER TABLE public.gdpr_vendors ADD COLUMN data_transfer_info text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_vendors' AND column_name = 'security_measures_description') THEN
+        ALTER TABLE public.gdpr_vendors ADD COLUMN security_measures_description text;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_vendors' AND column_name = 'assessment_data') THEN
+        ALTER TABLE public.gdpr_vendors ADD COLUMN assessment_data jsonb;
+    END IF;
+END $$;
 
 -- RLS per Vendors
 alter table public.gdpr_vendors enable row level security;
@@ -141,6 +181,9 @@ create table if not exists public.gdpr_staff (
   email text,
   role text, -- Ruolo/Mansione
   employment_type text default 'INTERNAL', -- 'INTERNAL' (Dipendente), 'EXTERNAL' (Collaboratore), 'AUTONOMOUS' (Autonomo)
+  is_system_admin boolean default false, -- Amministratore di Sistema
+  is_privacy_ref boolean default false, -- Referente Privacy
+  processing_allowance text, -- Operazioni di trattamento autorizzate
   appointment_date timestamp with time zone,
   has_signed_appointment boolean default false, -- Lettera di Nomina firmata?
   appointment_doc_id uuid references public.documents(id) on delete set null,
@@ -150,6 +193,20 @@ create table if not exists public.gdpr_staff (
   created_at timestamp with time zone default timezone('utc'::text, now()) not null,
   updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
+
+-- Add columns if they don't exist (for existing tables)
+DO $$ 
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_staff' AND column_name = 'is_system_admin') THEN
+        ALTER TABLE public.gdpr_staff ADD COLUMN is_system_admin boolean DEFAULT false;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_staff' AND column_name = 'is_privacy_ref') THEN
+        ALTER TABLE public.gdpr_staff ADD COLUMN is_privacy_ref boolean DEFAULT false;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'gdpr_staff' AND column_name = 'processing_allowance') THEN
+        ALTER TABLE public.gdpr_staff ADD COLUMN processing_allowance text;
+    END IF;
+END $$;
 
 -- RLS per Staff
 alter table public.gdpr_staff enable row level security;

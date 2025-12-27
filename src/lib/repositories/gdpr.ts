@@ -242,6 +242,7 @@ export const GdprRepository = {
             lastAssessmentDate: item.last_assessment_date,
             nextAssessmentDate: item.next_assessment_date,
             notes: item.notes,
+            assessmentData: item.assessment_data,
             createdAt: item.created_at,
             updatedAt: item.updated_at
         }))
@@ -259,7 +260,8 @@ export const GdprRepository = {
             security_assessment_status: vendor.securityAssessmentStatus,
             last_assessment_date: vendor.lastAssessmentDate,
             next_assessment_date: vendor.nextAssessmentDate,
-            notes: vendor.notes
+            notes: vendor.notes,
+            assessment_data: vendor.assessmentData
         }
 
         const { data, error } = await supabase.from('gdpr_vendors').insert(dbData).select().single()

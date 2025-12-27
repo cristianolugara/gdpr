@@ -79,6 +79,16 @@ export default async function StaffPage() {
                                                 {member.employment_type === 'EXTERNAL' && 'Esterno'}
                                                 {member.employment_type === 'AUTONOMOUS' && 'Autonomo'}
                                             </Badge>
+                                            {member.is_system_admin && (
+                                                <Badge variant="outline" className="text-[10px] ml-1 border-purple-200 text-purple-700 bg-purple-50">
+                                                    Admin Sys
+                                                </Badge>
+                                            )}
+                                            {member.is_privacy_ref && (
+                                                <Badge variant="outline" className="text-[10px] ml-1 border-blue-200 text-blue-700 bg-blue-50">
+                                                    Ref. Privacy
+                                                </Badge>
+                                            )}
                                         </td>
                                         <td className="p-4 align-middle [&:has([role=checkbox])]:pr-0 text-center">
                                             <div className="flex justify-center">
