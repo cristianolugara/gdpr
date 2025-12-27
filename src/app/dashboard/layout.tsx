@@ -15,6 +15,7 @@ import {
     ShieldCheck
 } from "lucide-react"
 import { createClient } from "@/lib/supabase/server"
+import { signOut } from "@/app/actions/auth"
 
 export default async function DashboardLayout({
     children,
@@ -139,10 +140,12 @@ export default async function DashboardLayout({
                             {userEmail}
                         </p>
                     </div>
-                    <button className="flex w-full items-center gap-3 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/10 transition-colors">
-                        <LogOut className="h-4 w-4" />
-                        Diconnetti
-                    </button>
+                    <form action={signOut}>
+                        <button className="flex w-full items-center gap-3 px-4 py-2 text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/10 transition-colors">
+                            <LogOut className="h-4 w-4" />
+                            Diconnetti
+                        </button>
+                    </form>
                     {/* Removed static version display as requested */}
                 </div>
             </aside>
